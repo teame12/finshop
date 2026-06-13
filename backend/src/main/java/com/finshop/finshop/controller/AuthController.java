@@ -1,6 +1,8 @@
 package com.finshop.finshop.controller;
 
+import com.finshop.finshop.model.dto.AuthResponse;
 import com.finshop.finshop.model.dto.UserDTO;
+import com.finshop.finshop.model.request.LoginRequest;
 import com.finshop.finshop.model.request.RegisterRequest;
 import com.finshop.finshop.service.AuthService;
 import jakarta.validation.Valid;
@@ -23,5 +25,11 @@ public class AuthController {
     public ResponseEntity<UserDTO> register(@Valid @RequestBody RegisterRequest request){
         UserDTO userDTO = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request){
+        AuthResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
     }
 }
