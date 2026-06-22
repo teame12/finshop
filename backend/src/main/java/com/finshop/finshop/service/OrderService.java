@@ -24,6 +24,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Transactional
     public OrderDTO createOrder(String userEmail, OrderRequest request) {
@@ -69,8 +70,10 @@ public class OrderService {
 
         // Lier les items à la commande
         items.forEach(item -> item.setOrder(order));
+        Order saveOrder = orderRepository.save(order);
+        emailService.sendOrderConfirmation(saveOrder);
 
-        return toDTO(orderRepository.save(order));
+        return toDTO(saveOrder);
     }
 
     public List<OrderDTO> getUserOrders(String userEmail) {
